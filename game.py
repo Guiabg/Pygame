@@ -4,7 +4,7 @@ import pygame
 from sys import exit
 #Janela
 pygame.init()
-screen = pygame.display.set_mode((800,400))
+screen = pygame.display.set_mode((1300,750))
 pygame.display.set_caption('A janela')
 clock = pygame.time.Clock()
 fonte_teste = pygame.font.Font('font\Pixeltype.ttf', 50)
