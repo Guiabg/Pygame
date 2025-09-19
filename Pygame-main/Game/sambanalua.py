@@ -27,8 +27,8 @@ snail_big = pygame.transform.scale(snail_surface, (100,60))
 
 #Posições
 snail_x_pos = 600
-snail_rectangle = snail_surface.get_rect(bottomright = (500,200))
-player_rectangle = player_surface.get_rect(midbottom = (100,200))
+snail_rectangle = snail_surface.get_rect(bottomright = (500,530))
+player_rectangle = player_surface.get_rect(midbottom = (100,205))
 
 
 while True:
