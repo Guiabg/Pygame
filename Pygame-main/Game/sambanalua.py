@@ -16,7 +16,7 @@ fonte_teste = pygame.font.Font('Pygame-main\\font\\Pixeltype.ttf', 50)
 space_surf = pygame.image.load('Pygame-main\sprites\space.png').convert()
 ground_surf = pygame.image.load('Pygame-main\graphics\ground.png').convert()
 snail_surf = pygame.image.load('Pygame-main\graphics\snail\snail1.png').convert_alpha()
-text_surf = fonte_teste.render('Teste.', False, 'White')
+text_score_surf = fonte_teste.render('Teste.', False, (64,64,64))
 astro_surf = pygame.image.load('Pygame-main\\sprites\\spr_1.png').convert_alpha()
 
 #Imagens rescalionadas
@@ -27,10 +27,11 @@ snail_big = pygame.transform.scale(snail_surf, (100,60)).convert_alpha()
 
 #Posições e colisões
 snail_x_pos = 600
+score_rect = text_score_surf.get_rect(center = (650, 50))
 snail_rect = snail_big.get_rect(bottomright = (100,550))
 astro_rect = astro_big.get_rect(midbottom = (300,550))
 
-
+#LOOP para manter tudo funcionando.
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -46,7 +47,11 @@ while True:
     #Camadas
     screen.blit(space_big,(0,0))
     screen.blit(ground_big,(0,550))
-    screen.blit(text_surf,(300,50))
+    pygame.draw.rect(screen, '#c0e8ec', score_rect)
+    pygame.draw.rect(screen, '#c0e8ec', score_rect,10)
+    #pygame.draw.ellipse(screen, 'Brown', pygame.Rect(50,200,100,100)) - Para criar círculos ou elípses.
+    #pygame.draw.line(screen, 'Gold', (0,0), pygame.mouse.get_pos(), 10) - para uma linha apontar para a posição do mouse
+    screen.blit(text_score_surf,(score_rect))
     """snail_x_pos-=4
     if snail_x_pos <-100: snail_x_pos = 800"""
     snail_rect.x -= 4
@@ -58,9 +63,6 @@ while True:
 
     screen.blit(astro_big, astro_rect)
 
-    if astro_rect.colliderect(snail_rect):
-        print('collision')
-
     #Teste de colisão
     # print(player_rectangle.colliderect(snail_rectangle)) para checar colisão entre dois objetos.
     """if astro_rect.colliderect(snail_rect):
@@ -68,7 +70,7 @@ while True:
     pygame.draw.rect(screen, (255,0,0), astro_rect, 2)
     pygame.draw.rect(screen, (255,0,0), snail_rect, 2)
     """mouse_pos = pygame.mouse.get_pos()
-    if player_rect.collidepoint((mouse_pos)):
+    if astro_rect.collidepoint((mouse_pos)):
         print(pygame.mouse.get_pressed())"""
 
     pygame.display.update()
