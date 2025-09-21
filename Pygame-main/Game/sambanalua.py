@@ -31,18 +31,26 @@ score_rect = text_score_surf.get_rect(center = (650, 50))
 snail_rect = snail_big.get_rect(bottomright = (100,550))
 astro_rect = astro_big.get_rect(midbottom = (300,550))
 
+#Gravidade
+astro_grav = 0
+
 #LOOP para manter tudo funcionando.
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        """if event.type == pygame.MOUSEMOTION:  Para checar os botões do mouse no jogo.
-            print(event.pos)
         if event.type == pygame.MOUSEBUTTONDOWN:
+            if astro_rect.collidepoint(event.pos) and astro_rect.bottom >=550:
+                astro_grav = -17
+        '''if event.type == pygame.MOUSEBUTTONDOWN:
             print('Mouse down')
         if event.type == pygame.MOUSEBUTTONUP:
-            print('Mouse up')"""
+            print('Mouse up')'''
+        #Controles
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and astro_rect.bottom >=550:
+                astro_grav = -17
 
     #Camadas
     screen.blit(space_big,(0,0))
@@ -51,6 +59,7 @@ while True:
     pygame.draw.rect(screen, '#c0e8ec', score_rect,10)
     #pygame.draw.ellipse(screen, 'Brown', pygame.Rect(50,200,100,100)) - Para criar círculos ou elípses.
     #pygame.draw.line(screen, 'Gold', (0,0), pygame.mouse.get_pos(), 10) - para uma linha apontar para a posição do mouse
+    
     screen.blit(text_score_surf,(score_rect))
     """snail_x_pos-=4
     if snail_x_pos <-100: snail_x_pos = 800"""
@@ -61,7 +70,17 @@ while True:
     # print(player_rectangle.left) para ver a posição da linha de certo lado do retângulo.
     # player_rectangle.left +=1 irá mover o personagem para a esquerda da tela.
 
+    #Astronauta
+    astro_grav +=0.5
+    astro_rect.y += astro_grav
+    if astro_rect.bottom >=550:
+        astro_rect.bottom = 550
     screen.blit(astro_big, astro_rect)
+
+    #Controles
+    '''keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        print('Jump')'''
 
     #Teste de colisão
     # print(player_rectangle.colliderect(snail_rectangle)) para checar colisão entre dois objetos.
