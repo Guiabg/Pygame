@@ -77,11 +77,6 @@ while True:
         astro_rect.bottom = 550
     screen.blit(astro_big, astro_rect)
 
-    #Controles
-    '''keys = pygame.key.get_pressed()
-    if keys[pygame.K_SPACE]:
-        print('Jump')'''
-
     #Teste de colisão
     # print(player_rectangle.colliderect(snail_rectangle)) para checar colisão entre dois objetos.
     """if astro_rect.colliderect(snail_rect):
