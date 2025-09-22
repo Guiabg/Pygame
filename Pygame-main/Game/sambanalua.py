@@ -1,9 +1,8 @@
-
 '''MENSAGEM PARA A NICOLLY: para mudar sprites, mude as origens de variáveis que usam "pygame.image.load".
-    Para os retângulos usados para colisão, mude os que terminam com "Rect".
-    Os retângulos dos inimigos estão na linha 126 e 128.
-    Se você quiser aumentar o tamanho de um sprite, crie uma variável nova terminando com "BIG" e use pygame.transform.scale
-    E é isso! Sobre o vídeo no Youtube, eu parei nas 2:47:26.'''
+Para os retângulos usados para colisão, mude os que terminam com "Rect".
+Os retângulos dos inimigos estão na linha 126 e 128.
+Se você quiser aumentar o tamanho de um sprite, crie uma variável nova terminando com "BIG" e use pygame.transform.scale
+E é isso! Sobre o vídeo no Youtube, eu parei nas 2:47:26.'''
     
 # Bibliotecas
 import pygame
@@ -169,6 +168,8 @@ while True:
         screen.blit(nome_jogo, nome_jogo_rect)
         score_message = fonte_texto.render(f'Sua pontuação: {score}', False, (111,196,169))
         score_message_rect = score_message.get_rect(center = (650,200))
+        astro_rect.midbottom = (170, 600)
+        astro_grav = 0
 
         #Palavras diferentes ao começar o jogo pela primeira vez.        
         if score == 0:
