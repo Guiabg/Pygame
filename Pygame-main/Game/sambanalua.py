@@ -126,7 +126,7 @@ while True:
             if randint(0,2):
                 lista_inimigos_rect.append(snail_big.get_rect(bottomright = (randint(1400,1600),600)))
             else:
-                lista_inimigos_rect.append(antena_big.get_rect(midbottom = (randint(1400,1600),400)))
+                lista_inimigos_rect.append(antena_big.get_rect(midbottom = (randint(1400,1600),300)))
 
     #Diferença de jogo "ativo" para game over.
     if jogo_ativo:
