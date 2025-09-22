@@ -1,8 +1,15 @@
-# -*- coding: utf-8 -*-
 
+'''MENSAGEM PARA A NICOLLY: para mudar sprites, mude as origens de variáveis que usam "pygame.image.load".
+    Para os retângulos usados para colisão, mude os que terminam com "Rect".
+    Os retângulos dos inimigos estão na linha 126 e 128.
+    Se você quiser aumentar o tamanho de um sprite, crie uma variável nova terminando com "BIG" e use pygame.transform.scale
+    E é isso! Sobre o vídeo no Youtube, eu parei nas 2:47:26.'''
+    
 # Bibliotecas
 import pygame
 from sys import exit
+
+#Usado para colocar inimigos aleatoriamente na tela
 from random import randint
 
 #Pontuação
@@ -31,7 +38,9 @@ def obstacle_movement(lista_inimigos):
         return lista_inimigos
     else:
         return []
+    
 
+#Colisões de inimigos em geral
 def collisions(astro,obstacles):
     if obstacles:
         for lista_inimigos_rect in obstacles:
@@ -48,10 +57,9 @@ jogo_ativo = False
 start_time = 0
 score = 0
 
-
 #Imagens e textos usados
 #Para colocar imagens, basta coloca-las dentro da pasta do jogo.
-#Usamos convert para trabalhar melhor com as imagens no pygame, além de melhorar o desempenho do jogo.
+#Usamos convert ou convert.alpha() para trabalhar melhor com as imagens no pygame, além de melhorar o desempenho do jogo.
 space_surf = pygame.image.load('Pygame-main\sprites\space.png').convert()
 ground_surf = pygame.image.load('Pygame-main\graphics\ground.png').convert()
 #text_score_surf = fonte_texto.render('Teste.', False, (64,64,64))
@@ -65,8 +73,6 @@ ground_big = pygame.transform.scale(ground_surf, (1300,200))
 planeta= pygame.transform.scale(planeta, (230,230))
 
 #Posições e colisões
-#snail_x_pos = 600
-#score_rect = text_score_surf.get_rect(center = (650, 50))/
 astro_rect = astro_big.get_rect(midbottom = (170,600))
 planeta_rect = planeta.get_rect(center = (630,370))
 
@@ -79,7 +85,6 @@ mensagem_jogo_rect = mensagem_jogo.get_rect(center = (650,620))
 #Inimigos
 snail_surf = pygame.image.load('Pygame-main\graphics\snail\snail1.png').convert_alpha()
 snail_big = pygame.transform.scale(snail_surf, (120,69))
-#snail_rect = snail_big.get_rect(bottomright = (100,600))
 antena_surf = pygame.image.load('Pygame-main\\sprites\Objetos\\antena.png').convert_alpha()
 antena_big = pygame.transform.scale(antena_surf, (130,136))
 lista_inimigos_rect = []
@@ -101,13 +106,14 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if astro_rect.collidepoint(event.pos) and astro_rect.bottom >=600:
                     astro_grav = -21
+
+            #Comandos para teste de mouse
             '''if event.type == pygame.MOUSEBUTTONDOWN:
                 print('Mouse down')
             if event.type == pygame.MOUSEBUTTONUP:
                 print('Mouse up')'''
             
             #Controles
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and astro_rect.bottom >=600:
                     astro_grav = -21
@@ -123,23 +129,21 @@ while True:
             else:
                 lista_inimigos_rect.append(antena_big.get_rect(midbottom = (randint(1400,1600),400)))
 
+    #Diferença de jogo "ativo" para game over.
     if jogo_ativo:
+
         #Camadas
         screen.blit(space_big,(0,0))
         screen.blit(ground_big,(0,600))
+
+        #Comandos para desenhar figuras geométricas na tela.
         #pygame.draw.rect(screen, '#c0e8ec', score_rect)
         #pygame.draw.rect(screen, '#c0e8ec', score_rect,10)
         #pygame.draw.ellipse(screen, 'Brown', pygame.Rect(50,200,100,100)) - Para criar círculos ou elípses.
         #pygame.draw.line(screen, 'Gold', (0,0), pygame.mouse.get_pos(), 10) - para uma linha apontar para a posição do mouse
         
-        #screen.blit(text_score_surf,(score_rect))
-        score = display_score()
-        """snail_x_pos-=4
-        if snail_x_pos <-100: snail_x_pos = 800"""
-        '''snail_rect.x -= 10
-        if snail_rect.right <=0: snail_rect.left = 1300
+        score = display_score() #Associando a variável score à display_score()
 
-        screen.blit(snail_big,snail_rect)'''
         # print(player_rectangle.left) para ver a posição da linha de certo lado do retângulo.
         # player_rectangle.left +=1 irá mover o personagem para a esquerda da tela.
 
@@ -158,7 +162,7 @@ while True:
         
         jogo_ativo = collisions(astro_rect, lista_inimigos_rect)
         
-    #Menu
+    #Display de tudo na tela
     else:
         screen.fill((94,129,162))
         screen.blit(planeta, planeta_rect)
@@ -166,6 +170,7 @@ while True:
         score_message = fonte_texto.render(f'Sua pontuação: {score}', False, (111,196,169))
         score_message_rect = score_message.get_rect(center = (650,200))
 
+        #Palavras diferentes ao começar o jogo pela primeira vez.        
         if score == 0:
             screen.blit(mensagem_jogo, mensagem_jogo_rect)
         else:
@@ -182,9 +187,6 @@ while True:
         print(pygame.mouse.get_pressed())"""
     '''if snail_rect.colliderect(astro_rect):
             jogo_ativo = False'''
-
-    #Tecla de atalho para sair
-
 
     pygame.display.update()
     clock.tick(60)
