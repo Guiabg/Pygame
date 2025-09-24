@@ -82,8 +82,8 @@ mensagem_jogo = fonte_texto.render('Pressione Espaço para começar.', False, (1
 mensagem_jogo_rect = mensagem_jogo.get_rect(center = (650,620))
 
 #Inimigos
-snail_surf = pygame.image.load('Pygame-main\graphics\snail\snail1.png').convert_alpha()
-snail_big = pygame.transform.scale(snail_surf, (120,69))
+alien_surf = pygame.image.load('Pygame-main\\sprites\\alien1.png').convert_alpha()
+snail_big = pygame.transform.scale(alien_surf, (76,96))
 antena_surf = pygame.image.load('Pygame-main\\sprites\Objetos\\antena.png').convert_alpha()
 antena_big = pygame.transform.scale(antena_surf, (130,136))
 lista_inimigos_rect = []
