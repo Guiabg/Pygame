@@ -30,9 +30,9 @@ def obstacle_movement(lista_inimigos):
             if lista_inimigos_rect.bottom == 600:
                 screen.blit(snail_big, lista_inimigos_rect)
             else:
-                screen.blit(antena_big, lista_inimigos_rect)
+                screen.blit(foguete_big, lista_inimigos_rect)
         
-        lista_inimigos = [obstacle for obstacle in lista_inimigos if obstacle.x > -150]
+        lista_inimigos = [obstacle for obstacle in lista_inimigos if obstacle.x > -320]
 
         return lista_inimigos
     else:
@@ -51,7 +51,7 @@ pygame.init()
 screen = pygame.display.set_mode((1300,750))
 pygame.display.set_caption('Samba na Lua')
 clock = pygame.time.Clock()
-fonte_texto = pygame.font.Font('Pygame-main\\font\\ari-w9500-display.ttf', 50)
+fonte_texto = pygame.font.Font(r'Pygame-main\font\ari-w9500-display.ttf', 50)
 jogo_ativo = False
 start_time = 0
 score = 0
@@ -62,7 +62,7 @@ score = 0
 space_surf = pygame.image.load('Pygame-main\sprites\space.png').convert()
 ground_surf = pygame.image.load('Pygame-main\graphics\ground.png').convert()
 #text_score_surf = fonte_texto.render('Teste.', False, (64,64,64))
-astro_surf = pygame.image.load('Pygame-main\\sprites\\spr_1.png').convert_alpha()
+astro_surf = pygame.image.load('Pygame-main\sprites\spr_1.png').convert_alpha()
 planeta = pygame.image.load('Pygame-main\sprites\Objetos\planeta.png').convert_alpha()
 
 #Imagens rescalionadas
@@ -84,8 +84,8 @@ mensagem_jogo_rect = mensagem_jogo.get_rect(center = (650,620))
 #Inimigos
 alien_surf = pygame.image.load('Pygame-main\\sprites\\alien1.png').convert_alpha()
 snail_big = pygame.transform.scale(alien_surf, (76,96))
-antena_surf = pygame.image.load('Pygame-main\\sprites\Objetos\\antena.png').convert_alpha()
-antena_big = pygame.transform.scale(antena_surf, (130,136))
+foguete_surf = pygame.image.load('Pygame-main\\sprites\\Objetos\\foguete.png').convert_alpha()
+foguete_big = pygame.transform.scale(foguete_surf, (180,85))
 lista_inimigos_rect = []
 
 #Timer
@@ -126,7 +126,7 @@ while True:
             if randint(0,2):
                 lista_inimigos_rect.append(snail_big.get_rect(bottomright = (randint(1400,1600),600)))
             else:
-                lista_inimigos_rect.append(antena_big.get_rect(midbottom = (randint(1400,1600),300)))
+                lista_inimigos_rect.append(foguete_big.get_rect(midbottom = (randint(1400,1600),300)))
 
     #Diferença de jogo "ativo" para game over.
     if jogo_ativo:
