@@ -29,8 +29,7 @@ def display_score():
 def obstacle_movement(lista_inimigos):
     if lista_inimigos:
         for lista_inimigos_rect in lista_inimigos:
-            lista_inimigos_rect.x -= 6
-
+            lista_inimigos_rect.x -= velocidade_inimigo
             if lista_inimigos_rect.bottom == 600:
                 screen.blit(snail_big, lista_inimigos_rect)
             else:
@@ -133,6 +132,7 @@ pygame.time.set_timer(obstacle_timer, 1500)
 
 # Gravidade
 astro_grav = 0
+velocidade_inimigo = 6
 
 
 # LOOP PRINCIPAL
@@ -168,6 +168,8 @@ while True:
         screen.blit(ground_big, (0, 600))
 
         score = display_score()
+        velocidade_inimigo = 6 + (score // 10)
+
 
         # Gravidade
         astro_grav += 0.6
