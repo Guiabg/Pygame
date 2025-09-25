@@ -1,14 +1,5 @@
-'''MENSAGEM PARA A NICOLLY: para mudar sprites, mude as origens de variáveis que usam "pygame.image.load".
-Para os retângulos usados para colisão, mude os que terminam com "Rect".
-Os retângulos dos inimigos estão na linha 126 e 128.
-Se você quiser aumentar o tamanho de um sprite, crie uma variável nova terminando com "BIG" e use pygame.transform.scale
-E é isso! Sobre o vídeo no Youtube, eu parei nas 2:47:26.'''
-    
-# Bibliotecas
 import pygame
 from sys import exit
-
-#Usado para colocar inimigos aleatoriamente na tela
 from random import randint
 
 #Pontuação
@@ -46,7 +37,25 @@ def collisions(astro,obstacles):
             if astro.colliderect(lista_inimigos_rect): return False
     return True
 
-#Janela
+# Animação do astronauta
+def astro_animation():
+    global astro_surf, astro_index
+
+    if astro_rect.bottom < 600:  # se está no ar
+        astro_surf = astro_jump
+    else:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_a] or keys[pygame.K_d]:
+            astro_index += 0.2   # velocidade da animação
+            if astro_index >= len(astro_walk):
+                astro_index = 0
+            astro_surf = astro_walk[int(astro_index)]
+        else:
+            astro_surf = astro_stand
+
+# =====================
+# INÍCIO DO JOGO
+# =====================
 pygame.init()
 screen = pygame.display.set_mode((1300,750))
 pygame.display.set_caption('Samba na Lua')
@@ -56,27 +65,37 @@ jogo_ativo = False
 start_time = 0
 score = 0
 
-#Imagens e textos usados
-#Para colocar imagens, basta coloca-las dentro da pasta do jogo.
-#Usamos convert ou convert.alpha() para trabalhar melhor com as imagens no pygame, além de melhorar o desempenho do jogo.
+# Background
 space_surf = pygame.image.load('Pygame-main\sprites\space.png').convert()
 ground_surf = pygame.image.load('Pygame-main\graphics\ground.png').convert()
-#text_score_surf = fonte_texto.render('Teste.', False, (64,64,64))
-astro_surf = pygame.image.load('Pygame-main\sprites\spr_1.png').convert_alpha()
 planeta = pygame.image.load('Pygame-main\sprites\Objetos\planeta.png').convert_alpha()
 
-#Imagens rescalionadas
-astro_big = pygame.transform.scale(astro_surf, (98,135))
 space_big = pygame.transform.scale(space_surf, (1300,650))
 ground_big = pygame.transform.scale(ground_surf, (1300,200))
 planeta= pygame.transform.scale(planeta, (230,230))
 
-#Posições e colisões
-astro_rect = astro_big.get_rect(midbottom = (170,600))
+# =====================
+# SPRITES DO ASTRONAUTA
+# =====================
+astro_walk = []
+for i in range(1, 9):  # spr_1.png até spr_8.png
+    img = pygame.image.load(f'Pygame-main/sprites/spr_{i}.png').convert_alpha()
+    img = pygame.transform.scale(img, (98,135))
+    astro_walk.append(img)
+
+astro_index = 0
+astro_jump = pygame.image.load('Pygame-main/graphics/Player/jump.png').convert_alpha()
+astro_jump = pygame.transform.scale(astro_jump, (98,135))
+astro_stand = pygame.image.load('Pygame-main/graphics/Player/player_stand.png').convert_alpha()
+astro_stand = pygame.transform.scale(astro_stand, (98,135))
+
+astro_surf = astro_stand
+astro_rect = astro_surf.get_rect(midbottom = (170,600))
+
+# Posição do planeta
 planeta_rect = planeta.get_rect(center = (630,370))
 
-
-nome_jogo = fonte_texto.render('Samba na Lua', False, (111,196,169))
+nome_jogo = fonte_texto.render('Samba Lua', False, (111,196,169))
 nome_jogo_rect = nome_jogo.get_rect(center = (630,115))
 mensagem_jogo = fonte_texto.render('Pressione Espaço para começar.', False, (111,196,169))
 mensagem_jogo_rect = mensagem_jogo.get_rect(center = (650,620))
@@ -95,7 +114,9 @@ pygame.time.set_timer(obstacle_timer, 1500)
 #Gravidade
 astro_grav = 0
 
-#LOOP para manter tudo funcionando.
+# =====================
+# LOOP PRINCIPAL
+# =====================
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -105,16 +126,9 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if astro_rect.collidepoint(event.pos) and astro_rect.bottom >=600:
                     astro_grav = -21
-
-            #Comandos para teste de mouse
-            '''if event.type == pygame.MOUSEBUTTONDOWN:
-                print('Mouse down')
-            if event.type == pygame.MOUSEBUTTONUP:
-                print('Mouse up')'''
             
-            #Controles
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and astro_rect.bottom >=600:
+                if (event.key == pygame.K_SPACE or event.key == pygame.K_w) and astro_rect.bottom >=600:
                     astro_grav = -21
         else:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
@@ -128,40 +142,37 @@ while True:
             else:
                 lista_inimigos_rect.append(foguete_big.get_rect(midbottom = (randint(1400,1600),300)))
 
-    #Diferença de jogo "ativo" para game over.
     if jogo_ativo:
-
-        #Camadas
         screen.blit(space_big,(0,0))
         screen.blit(ground_big,(0,600))
 
-        #Comandos para desenhar figuras geométricas na tela.
-        #pygame.draw.rect(screen, '#c0e8ec', score_rect)
-        #pygame.draw.rect(screen, '#c0e8ec', score_rect,10)
-        #pygame.draw.ellipse(screen, 'Brown', pygame.Rect(50,200,100,100)) - Para criar círculos ou elípses.
-        #pygame.draw.line(screen, 'Gold', (0,0), pygame.mouse.get_pos(), 10) - para uma linha apontar para a posição do mouse
-        
-        score = display_score() #Associando a variável score à display_score()
+        score = display_score()
 
-        # print(player_rectangle.left) para ver a posição da linha de certo lado do retângulo.
-        # player_rectangle.left +=1 irá mover o personagem para a esquerda da tela.
-
-        #Astronauta
+        # Gravidade
         astro_grav +=0.6
         astro_rect.y += astro_grav
         if astro_rect.bottom >=600:
             astro_rect.bottom = 600
             astro_grav = 0
 
-        screen.blit(astro_big, astro_rect)
+        # Movimento lateral
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            astro_rect.x -= 5
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            astro_rect.x += 5
 
-        
-        #Movimento dos inimigos
+        if astro_rect.left < 0: astro_rect.left = 0
+        if astro_rect.right > 1300: astro_rect.right = 1300
+
+        # Animação
+        astro_animation()
+        screen.blit(astro_surf, astro_rect)
+
+        # Inimigos
         lista_inimigos_rect = obstacle_movement(lista_inimigos_rect)
-        
         jogo_ativo = collisions(astro_rect, lista_inimigos_rect)
         
-    #Display de tudo na tela
     else:
         screen.fill((94,129,162))
         screen.blit(planeta, planeta_rect)
@@ -171,23 +182,10 @@ while True:
         astro_rect.midbottom = (170, 600)
         astro_grav = 0
 
-        #Palavras diferentes ao começar o jogo pela primeira vez.        
         if score == 0:
             screen.blit(mensagem_jogo, mensagem_jogo_rect)
         else:
             screen.blit(score_message,score_message_rect)
-
-    #Teste de colisão
-    # print(player_rectangle.colliderect(snail_rectangle)) para checar colisão entre dois objetos.
-    """if astro_rect.colliderect(snail_rect):
-        print('Collision')"""
-    #pygame.draw.rect(screen, (255,0,0), astro_rect, 2)
-    #pygame.draw.rect(screen, (255,0,0), snail_rect, 2)
-    """mouse_pos = pygame.mouse.get_pos()
-    if astro_rect.collidepoint((mouse_pos)):
-        print(pygame.mouse.get_pressed())"""
-    '''if snail_rect.colliderect(astro_rect):
-            jogo_ativo = False'''
 
     pygame.display.update()
     clock.tick(60)
