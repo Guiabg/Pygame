@@ -11,12 +11,10 @@ pygame.mixer.init()
 
 # Carrega a música
 pygame.mixer.music.load(os.path.join(sourceFileDir, 'audio', 'music.wav'))
-pygame.mixer.music.play(-1)  # -1 faz a música tocar em loop infinito
+pygame.mixer.music.play(-1)  # faz a música tocar em loop infinito
 
-# =====================
+
 # FUNÇÕES
-# =====================
-
 # Pontuação
 def display_score():
     current_time = int(pygame.time.get_ticks() / 1000) - start_time
@@ -68,9 +66,8 @@ def astro_animation():
         else:
             astro_surf = astro_stand
 
-# =====================
+
 # INÍCIO DO JOGO
-# =====================
 pygame.init()
 screen = pygame.display.set_mode((1300, 750))
 pygame.display.set_caption('Samba na Lua')
@@ -97,9 +94,8 @@ space_big = pygame.transform.scale(space_surf, (1300, 650))
 ground_big = pygame.transform.scale(ground_surf, (1300, 200))
 planeta = pygame.transform.scale(planeta, (230, 230))
 
-# =====================
+
 # SPRITES DO ASTRONAUTA
-# =====================
 astro_walk = []
 for i in range(1, 9):
     img = pygame.image.load(os.path.join(sourceFileDir, 'sprites', f'spr_{i}.png')).convert_alpha()
@@ -138,9 +134,9 @@ pygame.time.set_timer(obstacle_timer, 1500)
 # Gravidade
 astro_grav = 0
 
-# =====================
+
 # LOOP PRINCIPAL
-# =====================
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
